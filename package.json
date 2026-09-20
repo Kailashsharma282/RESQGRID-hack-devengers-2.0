@@ -12,7 +12,7 @@
     "dev:api": "npm --workspace=apps/api run dev",
     "dev:web": "npm --workspace=apps/web run dev",
     "build": "npm --workspace=packages/types run build && npm --workspace=apps/api run build && npm --workspace=apps/web run build",
-    "build:web": "npm --workspace=packages/types run build && npm --workspace=apps/web run build",
+    "build:web": "npm --workspace=packages/types run build && npm --workspace=apps/web run build && node scripts/copy-dist.js",
     "prisma:neon:generate": "npm --workspace=apps/api run prisma:neon:generate",
     "prisma:neon:push": "npm --workspace=apps/api run prisma:neon:push",
     "seed": "npm --workspace=apps/api run seed",
