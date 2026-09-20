@@ -98,7 +98,7 @@ export class DeduplicationService {
       const categoryMatch = incident.category === category;
 
       // 4. Semantic similarity against incident title + description + recent reports
-      const combinedIncidentText = `${incident.title} ${incident.description} ${incident.reports.map((r) => r.text).join(' ')}`;
+      const combinedIncidentText = `${incident.title} ${incident.description} ${incident.reports.map((r: any) => r.text).join(' ')}`;
       const semanticScore = calculateSemanticSimilarity(newReportText, combinedIncidentText);
 
       // Weighted similarity score (0 - 100)

@@ -52,7 +52,7 @@ export class AuditService {
       },
     });
 
-    return logs.map((log) => ({
+    return logs.map((log: any) => ({
       ...log,
       metadata: safeJsonParse(log.metadata, null),
     }));

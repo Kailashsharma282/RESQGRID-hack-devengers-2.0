@@ -19,22 +19,22 @@ analyticsRouter.get('/overview', async (_req: Request, res: Response) => {
     const allReports = await prisma.incidentReport.findMany();
 
     const activeIncidents = allIncidents.filter(
-      (i) => i.status !== IncidentStatus.RESOLVED && i.status !== IncidentStatus.CLOSED
+      (i: any) => i.status !== IncidentStatus.RESOLVED && i.status !== IncidentStatus.CLOSED
     ).length;
 
     const criticalIncidents = allIncidents.filter(
-      (i) => i.severity === 'CRITICAL' && i.status !== IncidentStatus.RESOLVED
+      (i: any) => i.severity === 'CRITICAL' && i.status !== IncidentStatus.RESOLVED
     ).length;
 
     const resourcesDispatched = allResources.filter(
-      (r) => r.status === ResourceStatus.ASSIGNED || r.status === ResourceStatus.EN_ROUTE || r.status === ResourceStatus.ON_SCENE
+      (r: any) => r.status === ResourceStatus.ASSIGNED || r.status === ResourceStatus.EN_ROUTE || r.status === ResourceStatus.ON_SCENE
     ).length;
 
     const respondersActive = Math.max(resourcesDispatched * 3, 14);
 
-    const peopleAffectedTotal = allIncidents.reduce((sum, i) => sum + (i.affectedPeople || 0), 0);
-    const resolvedIncidents = allIncidents.filter((i) => i.status === IncidentStatus.RESOLVED);
-    const peopleAssistedTotal = resolvedIncidents.reduce((sum, i) => sum + (i.affectedPeople || 0), 0);
+    const peopleAffectedTotal = allIncidents.reduce((sum: number, i: any) => sum + (i.affectedPeople || 0), 0);
+    const resolvedIncidents = allIncidents.filter((i: any) => i.status === IncidentStatus.RESOLVED);
+    const peopleAssistedTotal = resolvedIncidents.reduce((sum: number, i: any) => sum + (i.affectedPeople || 0), 0);
 
     // Calculate merged duplicates: total reports - unique incidents
     const duplicateReportsMerged = Math.max(allReports.length - allIncidents.length, 12);
@@ -42,7 +42,7 @@ analyticsRouter.get('/overview', async (_req: Request, res: Response) => {
 
     // Category distribution
     const catMap: Record<string, number> = {};
-    allIncidents.forEach((i) => {
+    allIncidents.forEach((i: any) => {
       catMap[i.category] = (catMap[i.category] || 0) + 1;
     });
     const incidentsByCategory = Object.entries(catMap).map(([category, count]) => ({
@@ -52,7 +52,7 @@ analyticsRouter.get('/overview', async (_req: Request, res: Response) => {
 
     // Severity distribution
     const sevMap: Record<string, number> = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 };
-    allIncidents.forEach((i) => {
+    allIncidents.forEach((i: any) => {
       if (sevMap[i.severity] !== undefined) {
         sevMap[i.severity]++;
       }
@@ -64,7 +64,7 @@ analyticsRouter.get('/overview', async (_req: Request, res: Response) => {
 
     // Resource utilization by type
     const utilMap: Record<string, { total: number; inUse: number }> = {};
-    allResources.forEach((r) => {
+    allResources.forEach((r: any) => {
       if (!utilMap[r.type]) utilMap[r.type] = { total: 0, inUse: 0 };
       utilMap[r.type].total++;
       if (r.status !== ResourceStatus.AVAILABLE) {

@@ -197,7 +197,7 @@ demoRouter.post('/step-dispatch', async (_req: Request, res: Response) => {
       take: 3,
     });
 
-    const dispatches = [];
+    const dispatches: any[] = [];
     for (const unit of units) {
       const d = await prisma.dispatch.create({
         data: {
@@ -238,7 +238,7 @@ demoRouter.post('/step-dispatch', async (_req: Request, res: Response) => {
       action: 'dispatch_created',
       entityType: 'INCIDENT',
       entityId: incident.id,
-      metadata: { dispatchedUnits: units.map((u) => u.name) },
+      metadata: { dispatchedUnits: units.map((u: any) => u.name) },
     });
 
     broadcastEvent(WS_EVENTS.INCIDENT_UPDATED, updatedIncident, incident.id);

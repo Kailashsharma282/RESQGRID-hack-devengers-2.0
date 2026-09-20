@@ -159,7 +159,7 @@ incidentsRouter.post('/:id/dispatch', async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Incident not found.' });
     }
 
-    const createdDispatches = [];
+    const createdDispatches: any[] = [];
 
     for (const resId of resourceIds) {
       const resource = await prisma.resource.findUnique({ where: { id: resId } });
@@ -403,7 +403,7 @@ incidentsRouter.post('/:id/reanalyze', async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Incident not found.' });
     }
 
-    const combinedText = `${incident.description} ${incident.reports.map((r) => r.text).join(' ')}`;
+    const combinedText = `${incident.description} ${incident.reports.map((r: any) => r.text).join(' ')}`;
     const analysis = await AIService.analyzeIncidentReport(combinedText, incident.category, incident.address);
 
     const updated = await prisma.incident.update({

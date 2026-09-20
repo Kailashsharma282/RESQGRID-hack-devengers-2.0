@@ -3,7 +3,7 @@ services:
     name: resqgrid-api
     env: node
     plan: free
-    buildCommand: npm install --include=dev && npm --workspace=packages/types run build && npm --workspace=apps/api run build
+    buildCommand: npm install --include=dev && npm --workspace=packages/types run build && npm --workspace=apps/api run prisma:generate && npm --workspace=apps/api run build
     startCommand: npm --workspace=apps/api run start
     healthCheckPath: /health/live
     envVars:

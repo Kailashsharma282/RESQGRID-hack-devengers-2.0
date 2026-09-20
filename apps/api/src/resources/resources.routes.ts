@@ -28,7 +28,7 @@ resourcesRouter.get('/', async (req: Request, res: Response) => {
       },
     });
 
-    const parsed = resources.map((r) => ({
+    const parsed = resources.map((r: any) => ({
       ...r,
       capabilities: safeJsonParse(r.capabilities, []),
       metadata: safeJsonParse(r.metadata, null),
@@ -66,7 +66,7 @@ resourcesRouter.get('/nearby', async (req: Request, res: Response) => {
     });
 
     const nearby = resources
-      .map((r) => {
+      .map((r: any) => {
         const distanceKm = calculateHaversineDistance(latitude, longitude, r.latitude, r.longitude);
         return {
           ...r,
@@ -76,8 +76,8 @@ resourcesRouter.get('/nearby', async (req: Request, res: Response) => {
           etaMinutes: Math.max(2, Math.round((distanceKm / 40) * 60 + 2)),
         };
       })
-      .filter((r) => r.distanceKm <= radius)
-      .sort((a, b) => a.distanceKm - b.distanceKm);
+      .filter((r: any) => r.distanceKm <= radius)
+      .sort((a: any, b: any) => a.distanceKm - b.distanceKm);
 
     return res.json({ success: true, data: nearby });
   } catch (error: any) {
