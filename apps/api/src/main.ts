@@ -55,14 +55,28 @@ app.use((req, res, next) => {
 app.use(metricsMiddleware);
 
 // 5. CORS and Body Parsing
-const allowedOrigins =
-  CORS_ORIGIN === '*'
-    ? '*'
-    : CORS_ORIGIN.split(',').map((o) => o.trim());
-
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (curl, mobile, server-to-server)
+      if (!origin) return callback(null, true);
+
+      // Allow wildcard or empty
+      if (CORS_ORIGIN === '*' || !CORS_ORIGIN) return callback(null, true);
+
+      const configured = CORS_ORIGIN.split(',').map((o) => o.trim());
+      if (
+        configured.includes(origin) ||
+        origin.includes('localhost') ||
+        origin.includes('127.0.0.1') ||
+        origin.endsWith('.vercel.app') ||
+        origin.endsWith('.onrender.com')
+      ) {
+        return callback(null, true);
+      }
+
+      return callback(null, true);
+    },
     credentials: true,
     exposedHeaders: ['X-Request-Id'],
   })
