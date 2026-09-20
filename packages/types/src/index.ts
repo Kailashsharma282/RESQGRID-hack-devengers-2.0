@@ -1,74 +1,81 @@
-export enum UserRole {
-  CITIZEN = 'CITIZEN',
-  OPERATOR = 'OPERATOR',
-  RESPONDER = 'RESPONDER',
-  ADMIN = 'ADMIN'
-}
+export const UserRole = {
+  CITIZEN: 'CITIZEN',
+  OPERATOR: 'OPERATOR',
+  RESPONDER: 'RESPONDER',
+  ADMIN: 'ADMIN',
+} as const;
+export type UserRole = (typeof UserRole)[keyof typeof UserRole];
 
-export enum IncidentCategory {
-  FIRE = 'FIRE',
-  FLOOD = 'FLOOD',
-  MEDICAL = 'MEDICAL',
-  ACCIDENT = 'ACCIDENT',
-  STRUCTURAL = 'STRUCTURAL',
-  ELECTRICAL = 'ELECTRICAL',
-  SECURITY = 'SECURITY',
-  MISSING_PERSON = 'MISSING_PERSON',
-  HAZMAT = 'HAZMAT',
-  OTHER = 'OTHER'
-}
+export const IncidentCategory = {
+  FIRE: 'FIRE',
+  FLOOD: 'FLOOD',
+  MEDICAL: 'MEDICAL',
+  ACCIDENT: 'ACCIDENT',
+  STRUCTURAL: 'STRUCTURAL',
+  ELECTRICAL: 'ELECTRICAL',
+  SECURITY: 'SECURITY',
+  MISSING_PERSON: 'MISSING_PERSON',
+  HAZMAT: 'HAZMAT',
+  OTHER: 'OTHER',
+} as const;
+export type IncidentCategory = (typeof IncidentCategory)[keyof typeof IncidentCategory];
 
-export enum IncidentSeverity {
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-  CRITICAL = 'CRITICAL'
-}
+export const IncidentSeverity = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  CRITICAL: 'CRITICAL',
+} as const;
+export type IncidentSeverity = (typeof IncidentSeverity)[keyof typeof IncidentSeverity];
 
-export enum IncidentStatus {
-  REPORTED = 'REPORTED',
-  VERIFYING = 'VERIFYING',
-  VERIFIED = 'VERIFIED',
-  DISPATCHING = 'DISPATCHING',
-  RESPONDING = 'RESPONDING',
-  ON_SCENE = 'ON_SCENE',
-  RESOLVED = 'RESOLVED',
-  CLOSED = 'CLOSED'
-}
+export const IncidentStatus = {
+  REPORTED: 'REPORTED',
+  VERIFYING: 'VERIFYING',
+  VERIFIED: 'VERIFIED',
+  DISPATCHING: 'DISPATCHING',
+  RESPONDING: 'RESPONDING',
+  ON_SCENE: 'ON_SCENE',
+  RESOLVED: 'RESOLVED',
+  CLOSED: 'CLOSED',
+} as const;
+export type IncidentStatus = (typeof IncidentStatus)[keyof typeof IncidentStatus];
 
-export enum ResourceType {
-  AMBULANCE = 'AMBULANCE',
-  FIRE_TRUCK = 'FIRE_TRUCK',
-  RESCUE_BOAT = 'RESCUE_BOAT',
-  MEDICAL_TEAM = 'MEDICAL_TEAM',
-  FIRE_TEAM = 'FIRE_TEAM',
-  POLICE_TEAM = 'POLICE_TEAM',
-  VOLUNTEER_TEAM = 'VOLUNTEER_TEAM',
-  FOOD = 'FOOD',
-  WATER = 'WATER',
-  GENERATOR = 'GENERATOR',
-  SHELTER = 'SHELTER',
-  FIRST_AID = 'FIRST_AID',
-  OTHER = 'OTHER'
-}
+export const ResourceType = {
+  AMBULANCE: 'AMBULANCE',
+  FIRE_TRUCK: 'FIRE_TRUCK',
+  RESCUE_BOAT: 'RESCUE_BOAT',
+  MEDICAL_TEAM: 'MEDICAL_TEAM',
+  FIRE_TEAM: 'FIRE_TEAM',
+  POLICE_TEAM: 'POLICE_TEAM',
+  VOLUNTEER_TEAM: 'VOLUNTEER_TEAM',
+  FOOD: 'FOOD',
+  WATER: 'WATER',
+  GENERATOR: 'GENERATOR',
+  SHELTER: 'SHELTER',
+  FIRST_AID: 'FIRST_AID',
+  OTHER: 'OTHER',
+} as const;
+export type ResourceType = (typeof ResourceType)[keyof typeof ResourceType];
 
-export enum ResourceStatus {
-  AVAILABLE = 'AVAILABLE',
-  ASSIGNED = 'ASSIGNED',
-  EN_ROUTE = 'EN_ROUTE',
-  ON_SCENE = 'ON_SCENE',
-  UNAVAILABLE = 'UNAVAILABLE',
-  MAINTENANCE = 'MAINTENANCE'
-}
+export const ResourceStatus = {
+  AVAILABLE: 'AVAILABLE',
+  ASSIGNED: 'ASSIGNED',
+  EN_ROUTE: 'EN_ROUTE',
+  ON_SCENE: 'ON_SCENE',
+  UNAVAILABLE: 'UNAVAILABLE',
+  MAINTENANCE: 'MAINTENANCE',
+} as const;
+export type ResourceStatus = (typeof ResourceStatus)[keyof typeof ResourceStatus];
 
-export enum DispatchStatus {
-  ASSIGNED = 'ASSIGNED',
-  ACCEPTED = 'ACCEPTED',
-  EN_ROUTE = 'EN_ROUTE',
-  ON_SCENE = 'ON_SCENE',
-  COMPLETED = 'COMPLETED',
-  CANCELLED = 'CANCELLED'
-}
+export const DispatchStatus = {
+  ASSIGNED: 'ASSIGNED',
+  ACCEPTED: 'ACCEPTED',
+  EN_ROUTE: 'EN_ROUTE',
+  ON_SCENE: 'ON_SCENE',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+} as const;
+export type DispatchStatus = (typeof DispatchStatus)[keyof typeof DispatchStatus];
 
 export interface User {
   id: string;

@@ -58,7 +58,7 @@ export class AIService {
     const lower = text.toLowerCase();
 
     // 1. Detect Category
-    let category = IncidentCategory.OTHER;
+    let category: IncidentCategory = IncidentCategory.OTHER;
     if (lower.match(/fire|smoke|burning|flame|blaze|explosion|combustion/)) {
       category = IncidentCategory.FIRE;
     } else if (lower.match(/flood|water|drowning|overflow|submerged|leak|leaking water/)) {
@@ -108,7 +108,7 @@ export class AIService {
     vulnerablePeople = Math.min(vulnerablePeople, Math.max(affectedPeople, 1));
 
     // 3. Severity & Priority Scoring
-    let severity = IncidentSeverity.LOW;
+    let severity: IncidentSeverity = IncidentSeverity.LOW;
     let priorityScore = 30;
 
     const isLifeThreat = /trapped|critical|unconscious|dying|cardiac|explosion|heavy smoke|massive fire|toxic|severe bleeding/i.test(lower);
