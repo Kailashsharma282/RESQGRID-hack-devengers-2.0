@@ -18,7 +18,8 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@resqgrid/types": ["../../packages/types/src/index.ts"]
     }
   },
   "include": ["src"]
