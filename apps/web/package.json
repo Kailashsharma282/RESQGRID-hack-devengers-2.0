@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && node ../../scripts/copy-dist.js",
-    "build:web": "tsc && vite build && node ../../scripts/copy-dist.js",
+    "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
