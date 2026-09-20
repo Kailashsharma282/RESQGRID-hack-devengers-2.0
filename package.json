@@ -1,0 +1,24 @@
+{
+  "name": "resqgrid",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ResQGrid: AI-Powered Emergency Intelligence & Response Coordination Platform",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n \"api,web\" -c \"blue,green\" \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "npm --workspace=apps/api run dev",
+    "dev:web": "npm --workspace=apps/web run dev",
+    "build": "npm --workspace=packages/types run build && npm --workspace=apps/api run build && npm --workspace=apps/web run build",
+    "prisma:neon:generate": "npm --workspace=apps/api run prisma:neon:generate",
+    "prisma:neon:push": "npm --workspace=apps/api run prisma:neon:push",
+    "seed": "npm --workspace=apps/api run seed",
+    "demo:reset": "npm --workspace=apps/api run demo:reset",
+    "test": "npm --workspace=apps/api run test"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Production
+dist/
+build/
+
+# Misc
+.DS_Store
+*.pem
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment & Secrets (Crucial: never commit real API keys or DB passwords)
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
+**/.env.production
+**/.env.development
+!**/.env.example
+
+# Uploads
+uploads/
+**/uploads/
+
+# Database
+*.sqlite
+*.sqlite-journal
+*.db
+*.db-journal
+
+# IDE
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -1,0 +1,147 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String           @id @default(uuid())
+  name         String
+  email        String           @unique
+  phone        String?
+  passwordHash String
+  role         String           @default("CITIZEN") // CITIZEN, OPERATOR, RESPONDER, ADMIN
+  avatar       String?
+  isActive     Boolean          @default(true)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  reports      IncidentReport[]
+  dispatches   Dispatch[]
+  AuditLog     AuditLog[]
+}
+
+model Incident {
+  id               String           @id @default(uuid())
+  incidentCode     String           @unique
+  title            String
+  description      String
+  category         String           // FIRE, FLOOD, MEDICAL, ACCIDENT, STRUCTURAL, ELECTRICAL, SECURITY, MISSING_PERSON, HAZMAT, OTHER
+  severity         String           // LOW, MEDIUM, HIGH, CRITICAL
+  status           String           @default("REPORTED") // REPORTED, VERIFYING, VERIFIED, DISPATCHING, RESPONDING, ON_SCENE, RESOLVED, CLOSED
+  latitude         Float
+  longitude        Float
+  address          String
+  affectedPeople   Int              @default(0)
+  vulnerablePeople Int              @default(0)
+  confidenceScore  Float            @default(0.85)
+  priorityScore    Float            @default(50.0) // 0-100 calculated
+  source           String           @default("CITIZEN_REPORT") // CITIZEN_REPORT, IOT_SENSOR, OPERATOR_MANUAL, SYSTEM
+  aiSummary        String?
+  aiReasoning      String?
+  createdBy        String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  resolvedAt       DateTime?
+  reports          IncidentReport[]
+  dispatches       Dispatch[]
+  notifications    Notification[]
+
+  @@index([status])
+  @@index([severity])
+  @@index([category])
+  @@index([createdAt])
+}
+
+model IncidentReport {
+  id              String    @id @default(uuid())
+  incidentId      String
+  reporterId      String?
+  text            String
+  mediaUrl        String?
+  source          String    @default("WEB_APP") // WEB_APP, MOBILE, VOICE_TRANSCRIPT, SMS
+  latitude        Float
+  longitude       Float
+  extractedData   String?   // JSON structured extraction from AI
+  confidenceScore Float     @default(0.9)
+  createdAt       DateTime  @default(now())
+  incident        Incident  @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  reporter        User?     @relation(fields: [reporterId], references: [id], onDelete: SetNull)
+
+  @@index([incidentId])
+  @@index([createdAt])
+}
+
+model Resource {
+  id           String     @id @default(uuid())
+  name         String
+  type         String     // AMBULANCE, FIRE_TRUCK, RESCUE_BOAT, MEDICAL_TEAM, FIRE_TEAM, POLICE_TEAM, VOLUNTEER_TEAM, FOOD, WATER, GENERATOR, SHELTER, FIRST_AID, OTHER
+  status       String     @default("AVAILABLE") // AVAILABLE, ASSIGNED, EN_ROUTE, ON_SCENE, UNAVAILABLE, MAINTENANCE
+  capacity     Int        @default(1)
+  latitude     Float
+  longitude    Float
+  organization String
+  contact      String
+  capabilities String     @default("[]") // JSON string array e.g. ["HAZMAT", "EXTRICATION", "PARAMEDIC"]
+  metadata     String?    // JSON string for additional attributes
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  dispatches   Dispatch[]
+
+  @@index([status])
+  @@index([type])
+}
+
+model Dispatch {
+  id          String    @id @default(uuid())
+  incidentId  String
+  resourceId  String
+  assignedBy  String?
+  status      String    @default("ASSIGNED") // ASSIGNED, ACCEPTED, EN_ROUTE, ON_SCENE, COMPLETED, CANCELLED
+  assignedAt  DateTime  @default(now())
+  acceptedAt  DateTime?
+  arrivedAt   DateTime?
+  completedAt DateTime?
+  etaMinutes  Int       @default(5)
+  distanceKm  Float     @default(1.5)
+  notes       String?
+  incident    Incident  @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  resource    Resource  @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  assigner    User?     @relation(fields: [assignedBy], references: [id], onDelete: SetNull)
+
+  @@index([incidentId])
+  @@index([resourceId])
+  @@index([status])
+}
+
+model Notification {
+  id         String    @id @default(uuid())
+  userId     String?
+  incidentId String?
+  type       String    // INCIDENT_ALERT, DISPATCH_ASSIGNED, STATUS_UPDATE, DUPLICATE_DETECTED
+  title      String
+  message    String
+  isRead     Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  incident   Incident? @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  action     String   // incident_created, incident_verified, incident_merged, incident_escalated, resource_assigned, dispatch_created, responder_accepted, responder_arrived, incident_resolved
+  entityType String   // INCIDENT, RESOURCE, DISPATCH, REPORT, USER
+  entityId   String
+  metadata   String?  // JSON string
+  createdAt  DateTime @default(now())
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([action])
+  @@index([entityType])
+  @@index([createdAt])
+}
