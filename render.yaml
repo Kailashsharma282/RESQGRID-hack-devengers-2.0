@@ -3,12 +3,14 @@ services:
     name: resqgrid-api
     env: node
     plan: free
-    buildCommand: npm install && npm --workspace=packages/types run build && npm --workspace=apps/api run build
+    buildCommand: npm install --include=dev && npm --workspace=packages/types run build && npm --workspace=apps/api run build
     startCommand: npm --workspace=apps/api run start
     healthCheckPath: /health/live
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
       - key: PORT
         value: 3001
       - key: CORS_ORIGIN
