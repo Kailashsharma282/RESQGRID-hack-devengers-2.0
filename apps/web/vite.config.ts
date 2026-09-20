@@ -1,9 +1,27 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import fs from 'fs';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: 'sync-dist-to-root',
+      closeBundle() {
+        try {
+          const webDist = path.resolve(__dirname, 'dist');
+          const rootDist = path.resolve(__dirname, '../../dist');
+          if (fs.existsSync(webDist)) {
+            fs.cpSync(webDist, rootDist, { recursive: true, force: true });
+            console.log('⚡ [Vite] Production bundle synced to root /dist for Vercel');
+          }
+        } catch (err) {
+          console.error('[Vite] Failed to sync dist to root:', err);
+        }
+      },
+    },
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
