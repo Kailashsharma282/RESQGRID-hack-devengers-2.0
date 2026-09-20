@@ -55,7 +55,18 @@ app.use((req, res, next) => {
 app.use(metricsMiddleware);
 
 // 5. CORS and Body Parsing
-app.use(cors({ origin: '*', exposedHeaders: ['X-Request-Id'] }));
+const allowedOrigins =
+  CORS_ORIGIN === '*'
+    ? '*'
+    : CORS_ORIGIN.split(',').map((o) => o.trim());
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+    exposedHeaders: ['X-Request-Id'],
+  })
+);
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
